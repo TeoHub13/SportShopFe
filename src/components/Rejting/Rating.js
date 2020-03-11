@@ -30,11 +30,25 @@ class Rating extends Component
         }
     }
     componentDidMount() {
-        axios.get("http://localhost:8080/users/"+localStorage.getItem("id")+"/pregled")
-          .then(response => {
+        // axios.get("http://localhost:8080/users/pregled")
+        //   .then(response => {
+        //     this.setState({products:response.data});
+        //     console.log(response);
+        //   })
+        
+          axios({
+            method: "get",
+            url: "http://localhost:8080/users/pregled",
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Credentials":"true",
+              'Content-Type': 'application/json',
+              'Authorization' : 'Bearer ' + localStorage.getItem("token")
+            },
+          }).then(response => {
             this.setState({products:response.data});
             console.log(response);
-          })
+          });
 
 
        }

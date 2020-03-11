@@ -27,11 +27,33 @@ class  App extends Component {
 }
 
 componentDidMount() {
-  axios.get("http://localhost:8080/products")
-    .then(response => {
+  
+  // axios.get("http://localhost:8080/products",
+  //   {headers:{
+  //     // withCredentials: true,
+  //     'Content-Type': 'application/json',
+  //     Authorization : 'Bearer ' + localStorage.getItem("token")
+  // }})
+  //   .then(response => {
+  //     this.setState({products:response.data});
+  //     console.log(response);
+  //   })
+
+    axios({
+      method: "get",
+      url: "http://localhost:8080/products",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials":"true",
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem("token")
+      },
+    }).then(response => {
       this.setState({products:response.data});
       console.log(response);
-    })
+    });
+
+
   //this.loadListOfProducts();
 }
 // componentDidMount() {

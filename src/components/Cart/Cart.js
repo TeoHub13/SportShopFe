@@ -19,11 +19,35 @@ class Cart extends Component
         }
     }
     componentDidMount() {
-        axios.get("http://localhost:8080/kosnica/"+localStorage.getItem("id"))
-          .then(response => {
+      // const data={
+      //   token:localStorage.getItem("token")
+      //     }
+        // axios.get("http://localhost:8080/kosnica",{data},{headers:{ 
+        //   "Access-Control-Allow-Origin": "*",
+        //   "Access-Control-Allow-Credentials":"true",
+        //   'Content-Type': 'application/json',
+        //   'Authorization' : 'Bearer ' + localStorage.getItem("token")
+        //   }})
+        //   .then(response => {
+        //     this.setState({products:response.data});
+        //     console.log(response);
+        //   })
+
+          axios({
+            method: "get",
+            url: "http://localhost:8080/kosnica",
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Credentials":"true",
+              'Content-Type': 'application/json',
+              'Authorization' : 'Bearer ' + localStorage.getItem("token")
+            },
+          }).then(response => {
             this.setState({products:response.data});
             console.log(response);
-          })
+          });
+      
+
       
         }
         checkOutHandler= (e) =>

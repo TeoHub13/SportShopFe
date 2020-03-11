@@ -11,11 +11,29 @@ class Wishlist extends Component
         }
     }
     componentDidMount() {
-        axios.get("http://localhost:8080/products/users/"+localStorage.getItem("id")+"/wishlist")
-          .then(response => {
+        // axios.get("http://localhost:8080/products/users/wishlist")
+        //   .then(response => {
+        //     this.setState({products:response.data});
+        //     console.log(response);
+        //   })
+
+          axios({
+            method: "get",
+            url: "http://localhost:8080/products/users/wishlist",
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Credentials":"true",
+              'Content-Type': 'application/json',
+              'Authorization' : 'Bearer ' + localStorage.getItem("token")
+            },
+          }).then(response => {
             this.setState({products:response.data});
             console.log(response);
-          })
+          });
+      
+
+
+
         }
         deleteProductFromWishHandler = (e) =>
         {

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from 'axios';
 import {Link, Route, Redirect, BrowserRouter as Router, Switch} from 'react-router-dom';
 import Wishlist from "../Wishlist/Wishlist";
+import AuthService from '../auth/AuthService'
  class Login extends Component {
    constructor(props)
    {
@@ -12,6 +13,8 @@ import Wishlist from "../Wishlist/Wishlist";
         pass:'',
         bool:false
     }
+     //   this.LoginEventHandler = this.LoginEventHandler.bind(this)
+       // this.Auth=new AuthService();
    }
    
     
@@ -23,23 +26,55 @@ import Wishlist from "../Wishlist/Wishlist";
             kname:this.state.kname,
             pass:this.state.pass
         };
-        console.log(najava);
-        axios.post("http://localhost:8080/user",najava,{headers:{
+        //console.log(najava);
+        // Promise.all([
+        //      axios.post("http://localhost:8080/user",najava,{headers:{
+        //     'Content-Type': 'application/json'
+
+        // }}),
+        //     axios.post('http://localhost:8080/authenticate',najava,{headers:{
+        //         'Content-Type': 'application/json'
+    
+        //     }})
+        //   ]).then(([prv, vtor]) => {
+        //       console.log(prv),
+        //       console.log(vtor)
+        //     // do something with both responses
+        //   });
+        axios.post("http://localhost:8080/authenticate",najava,{headers:{
             'Content-Type': 'application/json'
+
         }})
         .then(response => {
             console.log(response);
-            localStorage.setItem("kname",response.data.username),
-            localStorage.setItem("id",response.data.id),
-            localStorage.setItem("uloga",response.data.uloga),
+            localStorage.setItem("token",response.data.token);
+           // localStorage.setItem("kname",response.data.username),
+           // localStorage.setItem("id",response.data.id),
+           // localStorage.setItem("uloga",response.data.uloga),
             
-            console.log(response.data.uloga)
-            if(response.data.uloga === 'administrator')
-            {
-                console.log(this.props)
-            }      
+            // console.log(response.data.uloga)
+            // if(response.data.uloga === 'administrator')
+            // {
+            //     console.log(this.props)
+            // }      
+
         });
+        
+
+
+        // this.Auth.login(this.state.kname,this.state.pass)
+        // .then(res =>{
+        //    this.props.history.replace('/');
+        // })
+        // .catch(err =>{
+        //     alert(err);
+        // })
+
     }
+    // componentWillMount(){
+    //     if(this.Auth.loggedIn())
+    //         this.props.history.replace('/');
+    // }
     render() {  
         return (
             <form onSubmit={this.LoginEventHandler}>

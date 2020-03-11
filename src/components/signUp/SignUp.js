@@ -32,7 +32,10 @@ export default class SignUp extends Component {
         }
         console.log(body);
         axios.post("http://localhost:8080/users",body,{headers:{
-            'Content-Type': 'application/json'}})
+            'Content-Type': 'application/json',}
+            
+            
+        })
         .then(response => {
           console.log(response);
         })
