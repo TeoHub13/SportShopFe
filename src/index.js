@@ -10,6 +10,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import $ from 'jquery';
 import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
+import Login from './components/Login/Login'
+import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
+
+
+// ReactDOM.render(
+//   <Router>
+//       <div>
+//           <Route exact path="/" component={App} />
+//           <Route exact path="/login" component={Login} />
+//       </div>
+//   </Router>
+//   , document.getElementById('root')
+// );
  ReactDOM.render(<App />, document.getElementById('root'));
 
 // // If you want your app to work offline and load faster, you can change

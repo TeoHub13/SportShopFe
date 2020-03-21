@@ -12,11 +12,25 @@ class Checkout extends Component
     }
 
     componentDidMount() {
-        axios.get("http://localhost:8080/naracki/"+localStorage.getItem("id"))
-          .then(response => {
+        // axios.get("http://localhost:8080/naracki")
+        //   .then(response => {
+        //     this.setState({naracka:response.data});
+        //     console.log(response);
+        //   })
+
+          axios({
+            method: "get",
+            url: "http://localhost:8080/naracki",
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Credentials":"true",
+              'Content-Type': 'application/json',
+              'Authorization' : 'Bearer ' + localStorage.getItem("token")
+            },
+          }).then(response => {
             this.setState({naracka:response.data});
             console.log(response);
-          })
+          });
       
         }
 

@@ -10,7 +10,7 @@ const cartDesign = (props) =>
     <h5 className="card-title">{props.model}</h5>
     
     <p className="card-text">brend: {props.brend}</p>
-    <p className="card-text">cena: {props.cena}</p>
+    <p className="card-text">cena: {props.cena} MKD</p>
     <p className="card-text">magacin: {props.magacin}</p>
     <p className="card-text">kolicina: {props.kolicina}</p>
     <a href="#" idm={props.idm} idp={props.idp} idk={props.idk} kol={props.kolicina}  onClick={props.clicked} className="btn btn-primary">Delete from Cart</a>

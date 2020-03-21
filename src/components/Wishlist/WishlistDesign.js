@@ -9,7 +9,7 @@ const WishlistDesign = (props) =>
     <h5 className="card-title">{props.model}</h5>
     
     <p className="card-text">brend: {props.brend}</p>
-    <p className="card-text">cena: {props.cena}</p>
+    <p className="card-text">cena: {props.cena} MKD</p>
     <a href="#"   idp={props.idp}  onClick={props.clicked} className="btn btn-primary">Delete from Wishlist</a>
   </div>
 </div>

@@ -30,11 +30,25 @@ class Rating extends Component
         }
     }
     componentDidMount() {
-        axios.get("http://localhost:8080/users/"+localStorage.getItem("id")+"/pregled")
-          .then(response => {
+        // axios.get("http://localhost:8080/users/pregled")
+        //   .then(response => {
+        //     this.setState({products:response.data});
+        //     console.log(response);
+        //   })
+        
+          axios({
+            method: "get",
+            url: "http://localhost:8080/users/pregled",
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Credentials":"true",
+              'Content-Type': 'application/json',
+              'Authorization' : 'Bearer ' + localStorage.getItem("token")
+            },
+          }).then(response => {
             this.setState({products:response.data});
             console.log(response);
-          })
+          });
 
 
        }
@@ -49,9 +63,21 @@ class Rating extends Component
           this.setState({
             products:arr
           })
-          axios.delete("http://localhost:8080/users/"+localStorage.getItem("id")+"/"+e.target.attributes.getNamedItem("pid").value,{headers:{
-            'Content-Type': 'application/json'
-        }}
+        //   axios.delete("http://localhost:8080/users/"+localStorage.getItem("id")+"/"+e.target.attributes.getNamedItem("pid").value,{headers:{
+        //     'Content-Type': 'application/json'
+        // }}
+
+
+
+        axios.delete("http://localhost:8080/users/del/"+e.target.attributes.getNamedItem("pid").value,{
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials":"true",
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem("token")
+          }
+        }
+
         ).then( () => {
                    }
          )

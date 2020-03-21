@@ -11,11 +11,29 @@ class Wishlist extends Component
         }
     }
     componentDidMount() {
-        axios.get("http://localhost:8080/products/users/"+localStorage.getItem("id")+"/wishlist")
-          .then(response => {
+        // axios.get("http://localhost:8080/products/users/wishlist")
+        //   .then(response => {
+        //     this.setState({products:response.data});
+        //     console.log(response);
+        //   })
+
+          axios({
+            method: "get",
+            url: "http://localhost:8080/products/users/wishlist",
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Credentials":"true",
+              'Content-Type': 'application/json',
+              'Authorization' : 'Bearer ' + localStorage.getItem("token")
+            },
+          }).then(response => {
             this.setState({products:response.data});
             console.log(response);
-          })
+          });
+      
+
+
+
         }
         deleteProductFromWishHandler = (e) =>
         {
@@ -25,7 +43,7 @@ class Wishlist extends Component
             console.log("zdr");
             const body=
             {
-                korisnik:localStorage.getItem("id"),
+               // korisnik:localStorage.getItem("id"),
 
                 produkt:parseInt(e.target.attributes.getNamedItem("idp").value)
               
@@ -48,9 +66,28 @@ class Wishlist extends Component
             //   console.log(arr)
             // }
  
-            axios.delete("http://localhost:8080/wishlist/"+localStorage.getItem("id"),{data:body},{headers:{
-              'Content-Type': 'application/json'
-          }}
+            // axios.delete("http://localhost:8080/wishlist",{data:body},{headers: {
+            //   "Access-Control-Allow-Origin": "*",
+            //   "Access-Control-Allow-Credentials":"true",
+            //   'Content-Type': 'application/json',
+            //   'Authorization' : 'Bearer ' + localStorage.getItem("token")
+            // }}
+
+
+            axios.delete("http://localhost:8080/wishlist", {
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Credentials":"true",
+              'Content-Type': 'application/json',
+              'Authorization' : 'Bearer ' + localStorage.getItem("token")
+              },
+              data: {
+                //korisnik:localStorage.getItem("id"),
+
+                produkt:parseInt(e.target.attributes.getNamedItem("idp").value)
+              
+              }
+            }
           ).then( response  => {
               console.log(response);
                      }

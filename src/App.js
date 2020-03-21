@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+
 import './App.css';
 import Header from './components/Header'
-import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
+import {BrowserRouter as Router,withRouter, Redirect, Route, Link} from 'react-router-dom';
 import Home from './components/Home';
 import ProductService from './repository/axiosProductRepository/axiosProductRepository';
 import axios from 'axios';
@@ -14,8 +15,15 @@ import Checkout from './components/checkout/Checkout'
 import SignUp from './components/signUp/SignUp'
 import Rating from './components/Rejting/Rating'
 import AddProduct from './components/addProd/AddProduct'
+import Addaccessories from './components/addProd/addAccessories'
+import AddClothes from './components/addProd/addClothes'
 import Admin from './components/admin/Admin'
 import Stats from './components/stats/Stats'
+import Patiki from './components/Patiki'
+import Obleka from './components/Obleka'
+import Accessories from './components/Accessories'
+import Logout from './components/logout/Logout';
+import SignUpAdmin from './components/signUp/SignUpAdmin'
 class  App extends Component {
   constructor(props)
 {
@@ -27,11 +35,33 @@ class  App extends Component {
 }
 
 componentDidMount() {
-  axios.get("http://localhost:8080/products")
-    .then(response => {
+  
+  // axios.get("http://localhost:8080/products",
+  //   {headers:{
+  //     // withCredentials: true,
+  //     'Content-Type': 'application/json',
+  //     Authorization : 'Bearer ' + localStorage.getItem("token")
+  // }})
+  //   .then(response => {
+  //     this.setState({products:response.data});
+  //     console.log(response);
+  //   })
+
+    axios({
+      method: "get",
+      url: "http://localhost:8080/products",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials":"true",
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem("token")
+      },
+    }).then(response => {
       this.setState({products:response.data});
       console.log(response);
-    })
+    });
+
+
   //this.loadListOfProducts();
 }
 // componentDidMount() {
@@ -56,14 +86,18 @@ componentDidMount() {
     e.preventDefault();
     console.log(e.target);
     console.log(e.target.id);
+    console.log(e.target.attributes.getNamedItem("value").value)
    // console.log(e.target.value);
     const rejting={
-      rejting:e.target.value
+      rejting:e.target.attributes.getNamedItem("value").value
     }
     console.log(rejting);
-    axios.post("http://localhost:8080/users/"+localStorage.getItem("id")+"/"+e.target.id,rejting,{headers:{
-      'Content-Type': 'application/json'
-  }}
+    axios.post("http://localhost:8080/users/"+e.target.id,rejting,{headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials":"true",
+      'Content-Type': 'application/json',
+      'Authorization' : 'Bearer ' + localStorage.getItem("token")
+    }}
   ).then(response => {
             console.log(response.data);
             alert("uspesno rejtuvanje");
@@ -74,10 +108,10 @@ componentDidMount() {
   onClickEventHandler = (e) =>
   { 
     e.preventDefault();
-    if(localStorage.getItem("id")==null)
-    {
-      alert("najavi se!!");
-    }
+    // if(localStorage.getItem("id")==null)
+    // {
+    //   alert("najavi se!!");
+    // }
     console.log(e.target)
     console.log(e.target.id)
     const kolicina=
@@ -85,12 +119,13 @@ componentDidMount() {
       kolicina:e.target.attributes.getNamedItem("kol").value
   };
     console.log(kolicina)
-      axios.post("http://localhost:8080/users/"+localStorage.getItem("id")+"/kosnica/product/"+e.target.id,kolicina
-//       {  headers:{
-//         'Content-Type': 'application/x-www-form-urlencoded',
-//         'Accept': 'application/json'}
-// })
-      )
+      axios.post("http://localhost:8080/users/kosnica/product/"+e.target.id,kolicina
+      ,{headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials":"true",
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem("token")
+      }})
     .then(response => {
         console.log(response);   
     }).catch(error =>
@@ -114,7 +149,12 @@ componentDidMount() {
       {
         popust: false
       }
-      axios.post("http://localhost:8080/users/"+localStorage.getItem("id")+"/wishlist/product/"+e.target.id,popust)
+      axios.post("http://localhost:8080/users/wishlist/product/"+e.target.id,popust,{headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials":"true",
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem("token")
+      }})
       .then(response=>{
         console.log(response);
       }).catch(error=>console.log(error));
@@ -131,7 +171,7 @@ componentDidMount() {
     );
   return (
     <Router>
-    <Header/>
+    <Header / >
     <Route path={"/"} exact><Home/></Route>
     <Route path={"/products"} >
       <div className="container">
@@ -140,18 +180,55 @@ componentDidMount() {
       </div>
       </div>
     </Route>
+    <Route path={"/patiki"} exact  render={() => <div className="container"  ><Patiki /></div>}>
+    </Route>
+    <Route path={"/accessories"} exact render={() => <Accessories />}>
+    </Route>
+    <Route path={"/obleka"} exact render={() =><div className="container"  > <Obleka /> </div>}>
+    </Route>
     <Route path={"/kosnica"} exact render={() => <Cart />}>
     </Route>
     <Route path={"/wishlist"} exact render={() => <Wishlist />} ></Route>
     <Route path={"/naracka"} exact render={() => <Checkout />} ></Route>    
     <Route path={"/signup"} exact render={() => <SignUp />} ></Route>   
+    <Route path={"/signupAdmin"} exact render={() =>  localStorage.getItem("role") === 'ROLE_ADMIN'
+    ?   <SignUpAdmin />  
+    :   
+    alert("you are not authorized to access this page")
+        } ></Route>   
+    
     <Route path={"/login"} exact render={()=>
     <Login />  
       } ></Route>
     <Route path={"/rating"} exact render={()=> <Rating />}></Route>
+    <Route path={"/logout"} exact render={()=> 
+     <Logout/>
+    
+    }></Route>
+    
     <Route path={"/admin"} exact render={()=>
-        localStorage.getItem("uloga") === 'administrator'
-    ?   <AddProduct />
+        localStorage.getItem("role") === 'ROLE_ADMIN'
+    ?   <AddProduct />  
+    :   
+    alert("you are not authorized to access this page")
+        
+    }>
+    
+    </Route>
+    
+    <Route path={"/addclothes"} exact render={()=>
+        localStorage.getItem("role") === 'ROLE_ADMIN'
+    ?   <AddClothes />  
+    :   
+    alert("you are not authorized to access this page")
+        
+    }>
+    
+    </Route>
+    
+    <Route path={"/addaccessories"} exact render={()=>
+        localStorage.getItem("role") === 'ROLE_ADMIN'
+    ?   <Addaccessories />  
     :   
     alert("you are not authorized to access this page")
         

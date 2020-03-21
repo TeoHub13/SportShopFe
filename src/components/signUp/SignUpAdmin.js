@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {Link} from 'react-router-dom';
 import axios from "axios";
-export default class SignUp extends Component {
+export default class SignUpAdmin extends Component {
     constructor(props)
     {
         super(props);
@@ -11,7 +11,7 @@ export default class SignUp extends Component {
           mail:'',
           username:'',
           password:'',
-          role:'ROLE_USER'
+          role:'ROLE_ADMIN'
         }
     }
     onSubmitHandler = (e) =>
@@ -20,6 +20,7 @@ export default class SignUp extends Component {
         console.log(this.state.ime);
         console.log(this.state.username);
         console.log(this.state.password);
+        console.log(this.state.role)
         
         const body ={
             ime:this.state.ime,

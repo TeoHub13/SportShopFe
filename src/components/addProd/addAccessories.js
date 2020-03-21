@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {Link} from 'react-router-dom';
 import axios from "axios";
-export default class AddProduct extends Component {
+export default class AddAccessories extends Component {
     constructor(props)
     {
         super(props);
@@ -13,7 +13,8 @@ export default class AddProduct extends Component {
           proizvoditelId:'',
             popust:0,
           slika:'',
-          velicina:''
+          velicina:'',
+          materijal:''
         }
     }
     onSubmitHandler = (e) =>
@@ -27,12 +28,13 @@ export default class AddProduct extends Component {
             proizvoditelId:this.state.proizvoditelId,
             popust:this.state.popust,
             slika:this.state.slika,
-            velicina:this.state.velicina
+            velicina:this.state.velicina,
+            materijal:this.state.materijal
             //kolicina:30
     
         }
         console.log(body);
-        axios.post("http://localhost:8080/products",body,{headers:{
+        axios.post("http://localhost:8080/addaccessories",body,{headers:{
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials":"true",
             'Content-Type': 'application/json',
@@ -78,6 +80,11 @@ export default class AddProduct extends Component {
                     <label>Velicina</label>
                     <input type="text" value={this.state.velicina} onChange={(event) => this.setState({velicina: event.target.value})} className="form-control"  />
                 </div>
+                <div className="form-group">
+                    <label>Materijal</label>
+                    <input type="text" value={this.state.materijal} onChange={(event) => this.setState({materijal: event.target.value})} className="form-control"  />
+                </div>
+                
                 {/* <div className="form-group">
                     <label>Role</label>
                     <hr/>

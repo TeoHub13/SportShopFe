@@ -19,11 +19,35 @@ class Cart extends Component
         }
     }
     componentDidMount() {
-        axios.get("http://localhost:8080/kosnica/"+localStorage.getItem("id"))
-          .then(response => {
+      // const data={
+      //   token:localStorage.getItem("token")
+      //     }
+        // axios.get("http://localhost:8080/kosnica",{data},{headers:{ 
+        //   "Access-Control-Allow-Origin": "*",
+        //   "Access-Control-Allow-Credentials":"true",
+        //   'Content-Type': 'application/json',
+        //   'Authorization' : 'Bearer ' + localStorage.getItem("token")
+        //   }})
+        //   .then(response => {
+        //     this.setState({products:response.data});
+        //     console.log(response);
+        //   })
+
+          axios({
+            method: "get",
+            url: "http://localhost:8080/kosnica",
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Credentials":"true",
+              'Content-Type': 'application/json',
+              'Authorization' : 'Bearer ' + localStorage.getItem("token")
+            },
+          }).then(response => {
             this.setState({products:response.data});
             console.log(response);
-          })
+          });
+      
+
       
         }
         checkOutHandler= (e) =>
@@ -32,9 +56,12 @@ class Cart extends Component
             datum:Date.parse(e.target.attributes.getNamedItem("date").value),
             suma:e.target.attributes.getNamedItem("vkupno").value
             }
-            axios.post("http://localhost:8080/naracki/"+localStorage.getItem("id")+"/"+e.target.attributes.getNamedItem("kosnica").value,body,{headers:{
-              'Content-Type': 'application/json'
-          }}
+            axios.post("http://localhost:8080/naracki/"+e.target.attributes.getNamedItem("kosnica").value,body,{headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Credentials":"true",
+              'Content-Type': 'application/json',
+              'Authorization' : 'Bearer ' + localStorage.getItem("token")
+            }}
           ).then( () => {
             alert("uspesno kupena kosncica");
             window.location.reload();
@@ -74,9 +101,34 @@ class Cart extends Component
               })
               console.log(this.state);
               console.log("heyo")
-            axios.delete("http://localhost:8080/kosnica/"+localStorage.getItem("id"),{data:body},{headers:{
-              'Content-Type': 'application/json'
-          }}
+            // axios.delete("http://localhost:8080/kosnica",{data:body},{headers: {
+            //   "Access-Control-Allow-Origin": "*",
+            //   "Access-Control-Allow-Credentials":"true",
+            //   'Content-Type': 'application/json',
+            //   'Authorization' : 'Bearer ' + localStorage.getItem("token")
+            // }}
+
+            axios.delete("http://localhost:8080/kosnica", {
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Credentials":"true",
+              'Content-Type': 'application/json',
+              'Authorization' : 'Bearer ' + localStorage.getItem("token")
+              },
+              data: {
+                kosnica:e.target.attributes.getNamedItem("idk").value,
+            
+                produkt:parseInt(e.target.attributes.getNamedItem("idp").value),
+              
+                magacin:e.target.attributes.getNamedItem("idm").value,
+
+                kolicina:parseInt(e.target.attributes.getNamedItem("kol").value)
+              }
+            }
+
+
+
+
           ).then( () => {
                      }
            )
@@ -107,7 +159,7 @@ class Cart extends Component
           return (
                 <div>
                 {products}
-                <h3>Za naplata:{total}ден</h3>
+                <h3>Za naplata:{total} MKD</h3>
                 <button type="button" date={this.state.date} onClick={this.checkOutHandler}  vkupno={total} kosnica={kosnica}   className="btn btn-outline-warning">Checkout</button>
                 </div>
           )
