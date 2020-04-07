@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Link,withRouter} from 'react-router-dom';
 import Auth from './auth/AuthService'
 import {NavBar, Nav,NavDropdown, NavItem} from 'react';
-import AuthService from './auth/AuthService';
 import AdminHeader from './roleHeaders/AdminHeader'
 import UserHeader from './roleHeaders/UserHeader'
 class header extends Component {
