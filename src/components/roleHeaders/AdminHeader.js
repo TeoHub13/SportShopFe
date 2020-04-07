@@ -63,6 +63,10 @@ class  AdminHeader extends Component
                     <li className="nav-item ">
                         <Link to={"/addaccessories"} className="nav-link">addAccessories</Link>
                     </li>
+                    <li className="nav-item ">
+                        <Link to={"/stats"} className="nav-link">Statistics</Link>
+                    </li>
+                    
                 </ul>
                 <form className="form-inline mt-2 mt-md-0 ml-3">
                     <Link to={"/signupAdmin"} className="btn btn-outline-info my-2 my-sm-0" >Sign Up Admin</Link>

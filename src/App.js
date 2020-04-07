@@ -236,7 +236,7 @@ componentDidMount() {
     
     </Route>
     <Route path={"/stats"} exact render={()=>
-        localStorage.getItem("uloga") === 'administrator'
+        localStorage.getItem("role") === 'ROLE_ADMIN'
     ?   <Stats/>
     :   
     alert("you are not authorized to access this page")

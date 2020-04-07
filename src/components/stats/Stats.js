@@ -27,14 +27,43 @@ class Stats extends Component
         // Make first two requests
         const [firstResponse, secondResponse,thirdResp,forthResp,fifthResp,sestiResp] = await Promise.all([
           
-          axios.get("http://localhost:8080/products/najprodavan"),
-          axios.get("http://localhost:8080/user/najaktiven"),
-          axios.get("http://localhost:8080/products/patiki"),
-          axios.get("http://localhost:8080/naracki/potrosuvacka"),
-          axios.get("http://localhost:8080/products/obleka"),
-          axios.get("http://localhost:8080/products/aksesoari")
+          axios.get("http://localhost:8080/products/najprodavan",{headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials":"true",
+            'Content-Type': 'application/json',
+            'Authorization' : 'Bearer ' + localStorage.getItem("token")
+          }}),
+          axios.get("http://localhost:8080/user/najaktiven",{headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials":"true",
+            'Content-Type': 'application/json',
+            'Authorization' : 'Bearer ' + localStorage.getItem("token")
+          }}),
+          axios.get("http://localhost:8080/products/patiki",{headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials":"true",
+            'Content-Type': 'application/json',
+            'Authorization' : 'Bearer ' + localStorage.getItem("token")
+          }}),
+          axios.get("http://localhost:8080/naracki/potrosuvacka",{headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials":"true",
+            'Content-Type': 'application/json',
+            'Authorization' : 'Bearer ' + localStorage.getItem("token")
+          }}),
+          axios.get("http://localhost:8080/products/obleka",{headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials":"true",
+            'Content-Type': 'application/json',
+            'Authorization' : 'Bearer ' + localStorage.getItem("token")
+          }}),
+          axios.get("http://localhost:8080/products/aksesoari",{headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials":"true",
+            'Content-Type': 'application/json',
+            'Authorization' : 'Bearer ' + localStorage.getItem("token")
+          }})
           
-      
           ]);
       
         // Update state once with all 3 responses
@@ -66,7 +95,7 @@ class Stats extends Component
                         } )  
                         
                 const obleka=this.state.obleka.map(ob => {
-                    return <OblekaDesign key={ob.produktId} id={ob.produktId}  mesec={ob.mesec} potrosuvacka={ob.potroshuvacka}  />
+                    return <OblekaDesign key={ob.produktId} id={ob.produktId}  mesec={ob.mesec} godina={ob.godina} potrosuvacka={ob.potroshuvacka}  />
                     } )  
                     
                 const aksesoari=this.state.aksesoari.map(aks => {
