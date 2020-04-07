@@ -4,6 +4,7 @@ import {Link, Route,withRouter, Redirect, BrowserRouter as Router, Switch} from 
 import Wishlist from "../Wishlist/Wishlist";
 import AuthService from '../auth/AuthService';
 import jwt from 'jwt-decode';
+
  class Login extends Component {
    constructor(props)
    {
@@ -64,6 +65,8 @@ import jwt from 'jwt-decode';
             // }      ;
         }).catch(error =>
             alert("obidi se pak"));
+            // }      
+
 
 
         // this.Auth.login(this.state.kname,this.state.pass)

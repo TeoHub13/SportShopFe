@@ -28,7 +28,6 @@ export default class AddProduct extends Component {
             popust:this.state.popust,
             slika:this.state.slika,
             velicina:this.state.velicina
-            //kolicina:30
     
         }
         console.log(body);
