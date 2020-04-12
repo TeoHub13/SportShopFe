@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import {Link} from 'react-router-dom';
+import {Link,withRouter} from 'react-router-dom';
 import axios from "axios";
-export default class SignUpAdmin extends Component {
+ class SignUpAdmin extends Component {
     constructor(props)
     {
         super(props);
@@ -40,6 +40,7 @@ export default class SignUpAdmin extends Component {
           }})
         .then(response => {
           console.log(response);
+            this.props.history.push("/")
         })
     }
     render() {
@@ -87,3 +88,4 @@ export default class SignUpAdmin extends Component {
         );
     }
 }
+export default withRouter(SignUpAdmin)

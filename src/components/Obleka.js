@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import Products from './products/Products';
+import {Link,withRouter} from 'react-router-dom';
+import PopustDesign  from './products/popustDesign';
 class Obleka extends Component {
     constructor(props)
   {
@@ -21,7 +23,7 @@ class Obleka extends Component {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Credentials":"true",
           'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem("token")
+         // 'Authorization' : 'Bearer ' + localStorage.getItem("token")
         },
       }).then(response => {
         this.setState({products:response.data});
@@ -52,7 +54,7 @@ class Obleka extends Component {
             alert("uspesno rejtuvanje");
 
         }).catch(error =>
-          console.log(error));
+          this.props.history.push("/login"));
   }
   onClickEventHandler = (e) =>
   { 
@@ -76,9 +78,10 @@ class Obleka extends Component {
         'Authorization' : 'Bearer ' + localStorage.getItem("token")
       }})
     .then(response => {
-        console.log(response);   
+        console.log(response);
+        alert("uspesno dodaden produkt vo kosnica")   
     }).catch(error =>
-      alert("nema tolkava kolicina na zaliha"))
+      this.props.history.push("/login"))
     
      // console.log(error));
 // const data={
@@ -105,16 +108,23 @@ class Obleka extends Component {
         'Authorization' : 'Bearer ' + localStorage.getItem("token")
       }})
       .then(response=>{
+        alert("uspesno dodaden produkt vo wishlist")
         console.log(response);
-      }).catch(error=>console.log(error));
+      }).catch(error=>this.props.history.push("/login"));
 
   }
   render(){
     //let brojac = 1;
     const products=this.state.products.map(product => {
       //console.log(product.slika)
-      return <Products  ime="Add to Cart" star={this.onStarEventHandler} wish={this.WishlistEventHandler} click={this.onClickEventHandler}    slika={product.slika} kol={this.state.kolicina}  id={product.produktId} key={product.produktId} model={product.model}  cena={product.cena} brend={product.brend}/>
+      if(product.popust===0){
+        return <Products  ime="Add to Cart" popust={product.popust}  star={this.onStarEventHandler} wish={this.WishlistEventHandler} click={this.onClickEventHandler}  slika={product.slika} kol={this.state.kolicina}  id={product.produktId} key={product.produktId} model={product.model}  cena={product.cena} brend={product.brend}/>
+        }else{
+  
+        return <PopustDesign  ime="Add to Cart" popust={product.popust}  star={this.onStarEventHandler} wish={this.WishlistEventHandler} click={this.onClickEventHandler}  slika={product.slika} kol={this.state.kolicina}  id={product.produktId} key={product.produktId} model={product.model}  cena={product.cena} brend={product.brend}/>
+        }
       //brojac++;
+     //brojac++;
     }
 
     );
@@ -127,4 +137,4 @@ class Obleka extends Component {
 }
 
 
-export default Obleka;
+export default withRouter(Obleka);

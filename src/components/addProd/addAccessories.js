@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import {Link} from 'react-router-dom';
+import {Link,withRouter} from 'react-router-dom';
 import axios from "axios";
-export default class AddAccessories extends Component {
+ class AddAccessories extends Component {
     constructor(props)
     {
         super(props);
@@ -14,7 +14,9 @@ export default class AddAccessories extends Component {
             popust:0,
           slika:'',
           velicina:'',
-          materijal:''
+          materijal:'',
+          kolicina:'',
+          magacinId:''
         }
     }
     onSubmitHandler = (e) =>
@@ -29,7 +31,9 @@ export default class AddAccessories extends Component {
             popust:this.state.popust,
             slika:this.state.slika,
             velicina:this.state.velicina,
-            materijal:this.state.materijal
+            materijal:this.state.materijal,
+             kolicina:this.state.kolicina,
+            magacinId:this.state.magacinId
             //kolicina:30
     
         }
@@ -41,6 +45,7 @@ export default class AddAccessories extends Component {
             'Authorization' : 'Bearer ' + localStorage.getItem("token")}})
         .then(response => {
           console.log(response);
+          this.props.history.push("/");
         })
     }
     render() {
@@ -84,7 +89,15 @@ export default class AddAccessories extends Component {
                     <label>Materijal</label>
                     <input type="text" value={this.state.materijal} onChange={(event) => this.setState({materijal: event.target.value})} className="form-control"  />
                 </div>
-                
+                <div className="form-group">
+                    <label>kolicina</label>
+                    <input type="number" value={this.state.kolicina} onChange={(event) => this.setState({kolicina: event.target.value})} min="0" className="form-control"  />
+                </div>
+                <div className="form-group">
+                    <label>MagacinId</label>
+                    <input type="number" value={this.state.magacinId} onChange={(event) => this.setState({magacinId: event.target.value})} min="1" max="3" className="form-control"  />
+                </div>
+
                 {/* <div className="form-group">
                     <label>Role</label>
                     <hr/>
@@ -98,3 +111,4 @@ export default class AddAccessories extends Component {
         );
     }
 }
+export default withRouter(AddAccessories)

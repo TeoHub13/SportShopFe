@@ -4,7 +4,7 @@ import Products from '../products/Products';
 import CartDesign from './CartDesign.js'
 import Button from '../button/Button'
 import { Route } from "react-router";
-import { Link } from "react-router-dom";
+import { Link,withRouter } from "react-router-dom";
 class Cart extends Component
 {
     constructor(props)
@@ -45,8 +45,7 @@ class Cart extends Component
           }).then(response => {
             this.setState({products:response.data});
             console.log(response);
-          });
-      
+          })
 
       
         }
@@ -64,7 +63,7 @@ class Cart extends Component
             }}
           ).then( () => {
             alert("uspesno kupena kosncica");
-            window.location.reload();
+           window.location.reload();
                      }
            )
           .catch(error=>console.log(error));        
@@ -92,8 +91,7 @@ class Cart extends Component
               let arr=this.state.products.filter(prod => {
                 console.log(prod.produkt.produktId)
                 console.log(body.produkt);
-         //       console.log("ha ha ha check out the bizzare")
-                return prod.produkt.produktId !== body.produkt
+            return prod.produkt.produktId !== body.produkt
               
               })
               this.setState({
@@ -146,23 +144,32 @@ class Cart extends Component
           console.log("zdravo")
           console.log(this.state.products);
             const products=this.state.products.map(product => {
-               // console.log(product);a
-                total+=product.kolicina*product.produkt.cena;
-                kosnica=product.kosnica.kosnicaId;
-                ime=product.kosnica.korisnik.ime;
-                prezime=product.kosnica.korisnik.prezime;
-                korId=product.kosnica.korisnik.korisnikId;
-                return <CartDesign total={total}  obj={product} clicked={this.deleteProductFromCartHandler} kolicina={product.kolicina}  idk={product.kosnica.kosnicaId} idm={product.magacin.magacinId}  idp={product.produkt.produktId} slika={product.produkt.slika} key={product.produkt.produktId} model={product.produkt.model}  cena={product.produkt.cena} brend={product.produkt.brend} magacin={product.magacin.imeMagacin}/>
+               // console.log(product);
+              if(product.produkt.popust===0)
+               total+=product.kolicina*product.produkt.cena;
+               else
+               {
+                const pop=product.produkt.cena* (product.produkt.popust / 100)
+                var newCena=product.produkt.cena-pop;
+                total+=newCena;
+               }
+              kosnica=product.kosnica.kosnicaId;
+               // ime=product.kosnica.korisnik.ime;
+               // prezime=product.kosnica.korisnik.prezime;
+               // korId=product.kosnica.korisnik.korisnikId;
+               // return <CartDesign total={total}  obj={product} clicked={this.deleteProductFromCartHandler} kolicina={product.kolicina}  idk={product.kosnica.kosnicaId} idm={product.magacin.magacinId}  idp={product.produkt.produktId} slika={product.produkt.slika} key={product.produkt.produktId} model={product.produkt.model}  cena={product.produkt.cena} brend={product.produkt.brend} magacin={product.magacin.imeMagacin}/>
+                }
 
-              }
+                
             );
           return (
                 <div>
-                {products}
+                {/* {products} */}
+                <CartDesign products={this.state.products} clicked={this.deleteProductFromCartHandler} />
                 <h3>Za naplata:{total} MKD</h3>
                 <button type="button" date={this.state.date} onClick={this.checkOutHandler}  vkupno={total} kosnica={kosnica}   className="btn btn-outline-warning">Checkout</button>
                 </div>
           )
     };
 }
-export default Cart
+export default withRouter(Cart)

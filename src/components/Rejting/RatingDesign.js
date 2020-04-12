@@ -3,7 +3,7 @@ const RatingDesign = (props) =>
 {
     return(
       
-<div className="card " style={{width: '18rem ',display:'inline-block'}}>
+<div className="card " style={{width:'18rem',height:'100%',padding: '0px',marginLeft:'1rem',display:'inline-block'}}>
   <img className="card-img-top" src={props.slika} style={{width:280,height:300}} alt="Card image cap"></img>
   <div className="card-body">
     <h5 className="card-title">{props.model}</h5>

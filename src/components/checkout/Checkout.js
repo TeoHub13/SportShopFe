@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from 'axios';
+import { Link,withRouter } from "react-router-dom";
 import CheckoutDesign from './CheckoutDesign';
 class Checkout extends Component
 {
@@ -30,7 +31,7 @@ class Checkout extends Component
           }).then(response => {
             this.setState({naracka:response.data});
             console.log(response);
-          });
+          })
       
         }
 
@@ -52,4 +53,4 @@ class Checkout extends Component
     
 }
 
-export default Checkout;
+export default withRouter(Checkout);

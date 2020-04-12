@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import {Link} from 'react-router-dom';
+import {Link,withRouter} from 'react-router-dom';
 import axios from "axios";
-export default class SignUp extends Component {
+ class SignUp extends Component {
     constructor(props)
     {
         super(props);
@@ -35,10 +35,11 @@ export default class SignUp extends Component {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials":"true",
             'Content-Type': 'application/json',
-            'Authorization' : 'Bearer ' + localStorage.getItem("token")
+            //'Authorization' : 'Bearer ' + localStorage.getItem("token")
           }})
         .then(response => {
           console.log(response);
+          this.props.history.push("/login")
         })
     }
     render() {
@@ -86,3 +87,4 @@ export default class SignUp extends Component {
         );
     }
 }
+export default withRouter(SignUp);

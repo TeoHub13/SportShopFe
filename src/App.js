@@ -20,17 +20,21 @@ import AddClothes from './components/addProd/addClothes'
 import Admin from './components/admin/Admin'
 import Stats from './components/stats/Stats'
 import Patiki from './components/Patiki'
+import UpdateProduct from './components/updateProduct/updateProduct'
 import Obleka from './components/Obleka'
 import Accessories from './components/Accessories'
 import Logout from './components/logout/Logout';
 import SignUpAdmin from './components/signUp/SignUpAdmin'
-class  App extends Component {
+import Modal from './components/modal/Modal'
+import PopustDesign from './components/products/popustDesign'
+ class  App extends Component {
   constructor(props)
 {
     super(props);
     this.state={
       products: [],
-      kolicina: null
+      kolicina: null,
+      newCena:""
     }
 }
 
@@ -54,7 +58,7 @@ componentDidMount() {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Credentials":"true",
         'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem("token")
+       // 'Authorization' : 'Bearer ' + localStorage.getItem("token")
       },
     }).then(response => {
       this.setState({products:response.data});
@@ -127,9 +131,12 @@ componentDidMount() {
         'Authorization' : 'Bearer ' + localStorage.getItem("token")
       }})
     .then(response => {
+      alert("produktot e dodaden vo kosnicata");
         console.log(response);   
     }).catch(error =>
-      alert("nema tolkava kolicina na zaliha"))
+      alert("ne si najaven")
+      
+      )
     
      // console.log(error));
 // const data={
@@ -140,7 +147,7 @@ componentDidMount() {
 // axios.post("localhost:8080/cors")
 // .then(response=>console.log(response))
 // .catch(error=>console.log(error))
-  }
+    }
 
   WishlistEventHandler=(e) =>
   {
@@ -157,6 +164,7 @@ componentDidMount() {
       }})
       .then(response=>{
         console.log(response);
+        alert("produktot e dodaden vo wishlist")
       }).catch(error=>console.log(error));
 
   }
@@ -164,7 +172,19 @@ componentDidMount() {
     //let brojac = 1;
     const products=this.state.products.map(product => {
       //console.log(product.slika)
-      return <Products  ime="Add to Cart"  star={this.onStarEventHandler} slika={product.slika} kol={this.state.kolicina} wish={this.WishlistEventHandler} click={this.onClickEventHandler} id={product.produktId} key={product.produktId} model={product.model}  cena={product.cena} brend={product.brend}/>
+      // if(product.popust===0)
+      // {
+      //   console.log("helo tall")
+      //     var popustCena=product.cena*(product.popust / 100)
+      //     this.setState({newCena:product.cena-popustCena})
+      //     return <Products  ime="Add to Cart" popust={this.state.popust} newCena={this.state.newCena}  star={this.onStarEventHandler} slika={product.slika} kol={this.state.kolicina} wish={this.WishlistEventHandler} click={this.onClickEventHandler} id={product.produktId} key={product.produktId} model={product.model}  cena={product.cena} brend={product.brend}/>
+      //   }
+      // else
+      if(product.popust===0)
+      return <Products  ime="Add to Cart" popust={product.popust}  star={this.onStarEventHandler} slika={product.slika} kol={this.state.kolicina} wish={this.WishlistEventHandler} click={this.onClickEventHandler} id={product.produktId} key={product.produktId} model={product.model}  cena={product.cena} brend={product.brend}/>
+      else
+      return <PopustDesign  ime="Add to Cart" popust={product.popust}  star={this.onStarEventHandler} slika={product.slika} kol={this.state.kolicina} wish={this.WishlistEventHandler} click={this.onClickEventHandler} id={product.produktId} key={product.produktId} model={product.model}  cena={product.cena} brend={product.brend}/>
+      
       //brojac++;
     }
 
@@ -193,6 +213,11 @@ componentDidMount() {
     <Route path={"/signup"} exact render={() => <SignUp />} ></Route>   
     <Route path={"/signupAdmin"} exact render={() =>  localStorage.getItem("role") === 'ROLE_ADMIN'
     ?   <SignUpAdmin />  
+    :   
+    alert("you are not authorized to access this page")
+        } ></Route>   
+        <Route path={"/updateProduct"} exact render={() =>  localStorage.getItem("role") === 'ROLE_ADMIN'
+    ?   <UpdateProduct/>  
     :   
     alert("you are not authorized to access this page")
         } ></Route>   
@@ -235,6 +260,15 @@ componentDidMount() {
     }>
     
     </Route>
+    <Route path={"/updateForm"} exact render={()=>
+        localStorage.getItem("role") === 'ROLE_ADMIN'
+    ?   <Modal />  
+    :   
+    alert("you are not authorized to access this page")
+        
+    }>
+    
+    </Route>
     <Route path={"/stats"} exact render={()=>
         localStorage.getItem("role") === 'ROLE_ADMIN'
     ?   <Stats/>
@@ -248,6 +282,7 @@ componentDidMount() {
   );
   }
 }
+
 
 
 export default App;

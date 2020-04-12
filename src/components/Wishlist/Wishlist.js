@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import WishlistDesign from './WishlistDesign'
+import {Link,withRouter} from 'react-router-dom';
 import axios from 'axios';
 class Wishlist extends Component
 {
@@ -29,7 +30,7 @@ class Wishlist extends Component
           }).then(response => {
             this.setState({products:response.data});
             console.log(response);
-          });
+          })
       
 
 
@@ -99,18 +100,20 @@ class Wishlist extends Component
             // let total=0;
             // console.log("zdravo")
             // console.log(this.state.products);
-              const products=this.state.products.map(product => {
+              //const products=this.state.products.map(product => {
                  // console.log(product);a
               //    total+=product.kolicina*product.produkt.cena;
-                  return <WishlistDesign  obj={product} clicked={this.deleteProductFromWishHandler} idp={product.produktId} slika={product.slika} key={product.produktId} model={product.model}  cena={product.cena} brend={product.brend}/>
-                 }
-              );
+                //  return <WishlistDesign  obj={product} clicked={this.deleteProductFromWishHandler} idp={product.produktId} slika={product.slika} key={product.produktId} model={product.model}  cena={product.cena} brend={product.brend}/>
+                 //}
+              //);
             return (
                   <div>
-                  {products}
+                  <WishlistDesign products={this.state.products}  clicked={this.deleteProductFromWishHandler} />
+{/*                 
+                  {products} */}
                   </div>
             )
       };
 
 }
-export default Wishlist;
+export default withRouter(Wishlist);

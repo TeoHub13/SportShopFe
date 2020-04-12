@@ -1,22 +1,22 @@
 import React, { Component } from "react";
-import {Link,withRouter} from 'react-router-dom';
-import axios from "axios";
- class addClothes extends Component {
+import axios from "axios";   
+import {Link,withRouter, Redirect, BrowserRouter as Router, Switch} from 'react-router-dom';
+ class updateProd extends Component {
     constructor(props)
     {
+        console.log(props.location.state.detail)
+        console.log(props)
         super(props);
         this.state={
-          brend:'',
-          pol:'',
-          model:'',
-          cena:'',
-          proizvoditelId:'',
-            popust:0,
-          slika:'',
-          velicina:'',
-          materijal:'',
-          kolicina:'',
-          magacinId:''
+          brend:props.location.state.detail.brend,
+          pol:props.location.state.detail.pol,
+          model:props.location.state.detail.model,
+          cena:props.location.state.detail.cena,
+          proizvoditelId:props.location.state.detail.proiz,
+            popust:props.location.state.detail.popust,
+          slika:props.location.state.detail.slika,
+          prId:props.location.state.detail.prId
+          
         }
     }
     onSubmitHandler = (e) =>
@@ -30,28 +30,28 @@ import axios from "axios";
             proizvoditelId:this.state.proizvoditelId,
             popust:this.state.popust,
             slika:this.state.slika,
-            velicina:this.state.velicina,
-            materijal:this.state.materijal,
-            kolicina:this.state.kolicina,
-            magacinId:this.state.magacinId
+            prId:this.state.prId
+            // velicina:this.state.velicina,
+            // materijal:this.state.materijal
             //kolicina:30
     
         }
         console.log(body);
-        axios.post("http://localhost:8080/addclothes",body,{headers:{
+        axios.patch("http://localhost:8080/updateProduct",body,{headers:{
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials":"true",
             'Content-Type': 'application/json',
             'Authorization' : 'Bearer ' + localStorage.getItem("token")}})
         .then(response => {
           console.log(response);
-          this.props.history.push("/");
+          this.props.history.push("/products")
+          location.reload();
         })
     }
     render() {
         return (
             <form onSubmit={this.onSubmitHandler} brend={this.state.brend} pol={this.state.pol} model={this.state.model} cena={this.state.cena} proizvoditel={this.state.proizvoditel} popust={this.state.popust} slika={this.state.slika}>
-                <h3>Add Product</h3>
+                <h3>Update Product</h3>
 
                 <div className="form-group">
                     <label>Brend</label>
@@ -81,34 +81,16 @@ import axios from "axios";
                     <label>Slika</label>
                     <input type="text" value={this.state.slika} onChange={(event) => this.setState({slika: event.target.value})} className="form-control"  />
                 </div>
-                <div className="form-group">
-                    <label>Velicina</label>
-                    <input type="text" value={this.state.velicina} onChange={(event) => this.setState({velicina: event.target.value})} className="form-control"  />
+                { <div className="form-group">
+                    <label>Popust</label>
+                    <input type="text" value={this.state.popust} onChange={(event) => this.setState({popust: event.target.value})} className="form-control"  />
                 </div>
-                <div className="form-group">
-                    <label>Materijal</label>
-                    <input type="text" value={this.state.materijal} onChange={(event) => this.setState({materijal: event.target.value})} className="form-control"  />
-                </div>
-                <div className="form-group">
-                    <label>kolicina</label>
-                    <input type="number" value={this.state.kolicina} onChange={(event) => this.setState({kolicina: event.target.value})} min="0" className="form-control"  />
-                </div>
-                <div className="form-group">
-                    <label>MagacinId</label>
-                    <input type="number" value={this.state.magacinId} onChange={(event) => this.setState({magacinId: event.target.value})} min="1" max="3" className="form-control"  />
-                </div>
+                 }
                 
-                {/* <div className="form-group">
-                    <label>Role</label>
-                    <hr/>
-                    <span>Korisnik</span><input type="radio" className="klasa" name="role"  value="user" placeholder="Enter role" />
-                    <hr/>
-                    <span>Admin</span><input type="radio" className="klasa" name="role" value="admin" placeholder="Enter role" />
-               
-                </div> */}
-                <button type="submit"  onSubmit={this.onSubmitHandler} className="btn btn-primary btn-block">Add</button>
+                
+                <button type="submit"  onSubmit={this.onSubmitHandler} className="btn btn-primary btn-block">Update</button>
             </form>
         );
     }
 }
-export default withRouter(addClothes)
+export default withRouter(updateProd)

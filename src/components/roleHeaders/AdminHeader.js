@@ -66,6 +66,9 @@ class  AdminHeader extends Component
                     <li className="nav-item ">
                         <Link to={"/stats"} className="nav-link">Statistics</Link>
                     </li>
+                    <li className="nav-item ">
+                        <Link to={"/updateProduct"} className="nav-link">updateProduct</Link>
+                    </li>
                     
                 </ul>
                 <form className="form-inline mt-2 mt-md-0 ml-3">
